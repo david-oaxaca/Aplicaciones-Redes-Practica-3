@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package chat_multicast;
 
 import java.awt.BorderLayout;
@@ -11,6 +6,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.MulticastSocket;
@@ -57,6 +54,11 @@ public class UserGUI extends JFrame implements ActionListener{
     
     public UserGUI() throws IOException, ClassNotFoundException{
         iniciarVentana("Practica 3");
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                escribirMensaje(socket, nombreUsuario + " ha salido del chat");
+            }
+        });
         setVisible(true);
     }
     
@@ -156,7 +158,7 @@ public class UserGUI extends JFrame implements ActionListener{
         if(evento.equals("Enviar")){
             String mensaje_send = txt_msj.getText();
             txt_msj.setText(""); 
-            MsgListModel.addElement("Tu: " + mensaje_send);
+            //MsgListModel.addElement("Tu: " + mensaje_send);
             escribirMensaje(socket, nombreUsuario + " : " + mensaje_send);
             //chat_functions.enviarMensaje(nombreUsuario + ": " +mensaje_send);
         }

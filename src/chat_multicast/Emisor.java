@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package chat_multicast;
 
 import java.io.IOException;
@@ -31,12 +26,13 @@ public class Emisor extends Thread{
     }
     
     public void run(){
-        InetAddress gpo;
+        //InetAddress gpo;
             try {
-                gpo = InetAddress.getByName("ff3e:40:2001::1");
+                InetAddress gpo = InetAddress.getByName("229.1.2.3");
+                //gpo = InetAddress.getByName("ff3e:40:2001::1");
                 byte[] b = msj.getBytes();
                 System.out.println("Mensaje enviado...");
-                DatagramPacket p = new DatagramPacket(b,b.length,gpo,7778);
+                DatagramPacket p = new DatagramPacket(b,b.length,gpo,7777);
                 socket.send(p);
                 try{
                     Thread.sleep(5000);
