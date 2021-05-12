@@ -39,8 +39,12 @@ public class Emisor extends Thread{
                 }catch(InterruptedException ie){}
             } catch (UnknownHostException ex) {
                 Logger.getLogger(Emisor.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             } catch (IOException ex) {
                 Logger.getLogger(Emisor.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             
     }

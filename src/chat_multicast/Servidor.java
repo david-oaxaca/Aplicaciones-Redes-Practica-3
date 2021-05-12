@@ -59,6 +59,15 @@ public class Servidor {
         }
     }
     
+    /**
+    * El método se encarga de enviar un mensaje a un destinatario
+    * enviandolo al puerto y grupo determinado ya que hace uso de multicast
+    * y lo envía a través de un datagrama.
+    *
+    * @param  mensaje   Mensaje a enviar
+    * @param  gpo       Grupo de multicast de escucha
+    * @param  puerto    El puerto al que se envía el multicast del mensaje
+    */
     public static void enviarMensaje(String mensaje, InetAddress gpo, int puerto) throws Exception{
         byte[] b = mensaje.getBytes();
         DatagramPacket envio = new DatagramPacket(b, b.length, gpo, puerto);

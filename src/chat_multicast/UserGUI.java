@@ -37,9 +37,10 @@ import javax.swing.border.LineBorder;
  * 
  */
 public class UserGUI extends JFrame implements ActionListener{
-    
     private JLabel lbl_Titulo, lbl_SubTitulo;
     private JButton btn_Enviar, btn_Emoji;
+    private JPanel panel_emoji;
+    private JButton[] btn_emojis = new JButton[5];
     private JTextField txt_msj;
     private JLabel lbl_username;
     
@@ -48,7 +49,6 @@ public class UserGUI extends JFrame implements ActionListener{
     
     private RWLock chat_functions = new RWLock();
     MulticastSocket socket;
-    
     
     private String nombreUsuario;
     
@@ -67,21 +67,18 @@ public class UserGUI extends JFrame implements ActionListener{
             
     }
     
-    public void iniciarVentana(String nombre) throws IOException, ClassNotFoundException{
+    public void iniciarVentana(String nombre) throws IOException, ClassNotFoundException {
         this.setTitle(nombre);
-        this.setSize(470, 430);
+        this.setSize(470, 470);
         this.setLayout(null);
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addComponents();
         this.setVisible(true);
         inicioChat();
-        
     }
     
-    
     public void addComponents() throws IOException, ClassNotFoundException{
-        
         this.nombreUsuario = getUserName();
         
         lbl_username = new JLabel("Nombre de usuario: " + nombreUsuario);
@@ -91,6 +88,12 @@ public class UserGUI extends JFrame implements ActionListener{
         
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBounds(30, 50, 390, 275);
+        
+        panel_emoji = new JPanel();
+        panel_emoji.setBounds(30, 385, 390, 35);
+        panel_emoji.setVisible(false);
+        addComponents_emoji_buttons();
+        this.add(panel_emoji);
         
         msjList.setVisibleRowCount(15);
         msjList.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
@@ -105,12 +108,10 @@ public class UserGUI extends JFrame implements ActionListener{
         
         btn_Enviar = new JButton("Enviar");
         btn_Enviar.setBounds(330, 335, 90, 35);
-        btn_Enviar.addActionListener(this);
+        btn_Enviar.addActionListener(this);  
         this.add(btn_Enviar);
         
         btn_Emoji = new JButton(":)");
-        
-        
         btn_Emoji.setBounds(275, 335, 50, 35);
         btn_Emoji.addActionListener(this);
         this.add(btn_Emoji);
@@ -122,7 +123,58 @@ public class UserGUI extends JFrame implements ActionListener{
         txt_msj.setBorder(lineBorder );
         
         this.add(txt_msj);
+    }
+    
+    private void addComponents_emoji_buttons() throws IOException, ClassNotFoundException {
+        btn_emojis[0] = new JButton("\uD83D\uDE00");
+        btn_emojis[0].setBounds(0, 0, 35, 35);
+        btn_emojis[0].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                txt_msj.setText(txt_msj.getText() + btn_emojis[0].getText());
+            }
+        });  
+        panel_emoji.add(btn_emojis[0]);
         
+        btn_emojis[1] = new JButton("\uD83D\uDE02");
+        btn_emojis[1].setBounds(0, 0, 35, 35);
+        btn_emojis[1].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                txt_msj.setText(txt_msj.getText() + btn_emojis[1].getText());
+            }
+        });  
+        panel_emoji.add(btn_emojis[1]);
+        
+        btn_emojis[2] = new JButton("\uD83D\uDE2D");
+        btn_emojis[2].setBounds(0, 0, 35, 35);
+        btn_emojis[2].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                txt_msj.setText(txt_msj.getText() + btn_emojis[2].getText());
+            }
+        });  
+        panel_emoji.add(btn_emojis[2]);
+        
+        btn_emojis[3] = new JButton("\uD83D\uDE28");
+        btn_emojis[3].setBounds(0, 0, 35, 35);
+        btn_emojis[3].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                txt_msj.setText(txt_msj.getText() + btn_emojis[3].getText());
+            }
+        });  
+        panel_emoji.add(btn_emojis[3]);
+        
+        btn_emojis[4] = new JButton("\uD83D\uDE31");
+        btn_emojis[4].setBounds(0, 0, 35, 35);
+        btn_emojis[4].addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                txt_msj.setText(txt_msj.getText() + btn_emojis[4].getText());
+            }
+        });  
+        panel_emoji.add(btn_emojis[4]);
     }
     
     private String getUserName(){
@@ -161,7 +213,12 @@ public class UserGUI extends JFrame implements ActionListener{
             //MsgListModel.addElement("Tu: " + mensaje_send);
             escribirMensaje(socket, nombreUsuario + " : " + mensaje_send);
             //chat_functions.enviarMensaje(nombreUsuario + ": " +mensaje_send);
+        }else if(evento.equals(":)")) {
+            if(panel_emoji.isVisible()) {
+                panel_emoji.setVisible(false);
+            }else {
+                panel_emoji.setVisible(true);
+            }
         }
-        
     }
 }
