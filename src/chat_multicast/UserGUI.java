@@ -28,7 +28,6 @@ import javax.swing.border.LineBorder;
  */
 public class UserGUI extends JFrame implements ActionListener {
 
-    private JLabel lbl_Titulo, lbl_SubTitulo;
     private JButton btn_Enviar, btn_Emoji;
     private JPanel panel_emoji;
     private JButton[] btn_emojis = new JButton[5];
@@ -37,8 +36,6 @@ public class UserGUI extends JFrame implements ActionListener {
 
     private DefaultListModel<String> MsgListModel = new DefaultListModel<>();
     private JList<String> msjList = new JList<>(MsgListModel);
-
-    private RWLock chat_functions = new RWLock();
     MulticastSocket socket;
 
     private String nombreUsuario;

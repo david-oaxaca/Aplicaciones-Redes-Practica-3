@@ -33,6 +33,7 @@ public class Servidor {
             System.out.println("Servidor iniciado, recibiendo mensajes...");
 
             String usuario = "";
+            
             for (;;) {
                 DatagramPacket recibo = new DatagramPacket(new byte[MAX_BITS_DATAGRAM], MAX_BITS_DATAGRAM);
                 cl.receive(recibo);
@@ -51,63 +52,12 @@ public class Servidor {
                 }
                 /* Checamos si se unio un nuevo usuario */
                 if (mensaje.contains("se ha unido a la sala de chat")) {
-                    enviarMensaje(usuariosOnline, gpo, PUERTO_CLIENTE_USUARIOS);
+                    new EmisorServidor(usuariosOnline, gpo, PUERTO_CLIENTE_USUARIOS, true).start();
                 }
-                enviarMensaje(mensaje, gpo, PUERTO_CLIENTE_CHAT);
+                new EmisorServidor(mensaje, gpo, PUERTO_CLIENTE_CHAT, false).start();
             }//for
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    /**
-     * El método se encarga de enviar un mensaje a un destinatario enviandolo al
-     * puerto y grupo determinado ya que hace uso de multicast y lo envía a
-     * través de un datagrama.
-     *
-     * @param mensaje Mensaje a enviar
-     * @param gpo Grupo de multicast de escucha
-     * @param puerto El puerto al que se envía el multicast del mensaje
-     */
-    public static void enviarMensaje(String mensaje, InetAddress gpo, int puerto) throws Exception {
-        byte[] b = mensaje.getBytes();
-        DatagramPacket envio = new DatagramPacket(b, b.length, gpo, puerto);
-
-        MulticastSocket socket = new MulticastSocket(puerto);
-        socket.setReuseAddress(true);
-        socket.setTimeToLive(255);
-        socket.send(envio);
-    }
-
-    /**
-     * El método se encarga de enviar un mensaje a un destinatario enviandolo al
-     * puerto y grupo determinado ya que hace uso de multicast y lo envía a
-     * través de un datagrama.
-     *
-     * @param mensaje Mensaje a enviar
-     * @param gpo Grupo de multicast de escucha
-     * @param puerto El puerto al que se envía el multicast del mensaje
-     */
-    public static void enviarMensaje(Object mensaje, InetAddress gpo, int puerto) throws Exception {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream out = null;
-        try {
-            out = new ObjectOutputStream(bos);
-            out.writeObject(mensaje);
-            out.flush();
-            byte[] b = bos.toByteArray();
-            DatagramPacket envio = new DatagramPacket(b, b.length, gpo, puerto);
-
-            MulticastSocket socket = new MulticastSocket(puerto);
-            socket.setReuseAddress(true);
-            socket.setTimeToLive(255);
-            socket.send(envio);
-        } finally {
-            try {
-                bos.close();
-            } catch (IOException ex) {
-                // ignore close exception
-            }
         }
     }
 }
